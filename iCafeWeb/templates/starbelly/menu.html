@@ -60,7 +60,7 @@
         <div class="sb-top-bar-bg"></div>
         <div class="container">
           <div class="sb-top-bar">
-            <a href="{% url 'menu' cafe.id %}" class="sb-logo-frame">
+            <a href="{% url 'menu' cafe.id user.tg_id %}" class="sb-logo-frame">
               <!-- logo img -->
               <img src="{{cafe.logo.url}}" alt="Starbelly">
             </a>
@@ -70,12 +70,14 @@
               </nav>
               <div class="sb-buttons-frame">
                 <!-- button -->
-                <div class="sb-btn sb-btn-2 sb-btn-gray sb-btn-icon sb-m-0 sb-btn-cart">
-                  <span class="sb-icon">
-                    <img src="{% static 'starbelly/img/ui/icons/cart' %}.svg" alt="icon">
-                  </span>
-                  <i class="sb-cart-number" id="cart_len">5</i>
-                </div>
+                <a href="{% url 'cart' cafe.id user.tg_id %}">
+                  <div class="sb-btn sb-btn-2 sb-btn-gray sb-btn-icon sb-m-0 sb-btn-cart">
+                    <span class="sb-icon">
+                      <img src="{% static 'starbelly/img/ui/icons/cart' %}.svg" alt="icon">
+                    </span>
+                    <i class="sb-cart-number">{{count_cart}}</i>
+                  </div>
+                </a>
                 <!-- button end -->
                 <!-- menu btn -->
                 <!-- info btn -->
@@ -115,7 +117,7 @@
               <div class="sb-grid-sizer"></div>
               {% for p in products %}
               <div class="sb-grid-item sb-item-25 {{p.category.id}}">
-                <a href="{% url 'product' p.id %}" class="sb-menu-item sb-mb-30">
+                <a href="{% url 'product' p.id user.tg_id %}" class="sb-menu-item sb-mb-30">
                   <div class="sb-cover-frame">
                     <img src="{{p.image.url}}" alt="product">
                   </div>
@@ -170,27 +172,7 @@
     <script src="{% static 'starbelly/js/main.js' %}"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-      let tg = window.Telegram.WebApp;
-
-      user = tg.initDataUnsafe.user
-      tg_id = user.id
       document.documentElement.style.setProperty("--theme_color", '{{ cafe.theme_color }}');
-
-      $.ajax({
-        url: "{% url 'cart_count' %}",
-        data: {
-          "tg_id": tg_id,
-          "cafe": '{{ cafe.id }}'
-        },
-        cache: false,
-        type: "GET",
-        success: function (response) {
-          document.getElementById("cart_len").innerText = response.count_cart;
-        },
-        error: function (xhr) {
-          console.log('error')
-        }
-      });
     </script>
   </body>
 

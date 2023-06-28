@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -29,6 +30,8 @@
     <link rel="stylesheet" href="{% static 'starbelly/css/plugins/fancybox.min.css' %}">
     <!-- starbelly css -->
     <link rel="stylesheet" href="{% static 'starbelly/css/style.css' %}">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <!-- page title -->
     <title>iCafeOrder</title>
   </head>
@@ -58,7 +61,7 @@
         <div class="sb-top-bar-bg"></div>
         <div class="container">
           <div class="sb-top-bar">
-            <a href="home-1.html" class="sb-logo-frame">
+            <a href="{% url 'menu' cafe.id user.tg_id %}" class="sb-logo-frame">
               <!-- logo img -->
               <img src="{% static 'starbelly/img/ui/logo.svg' %}" alt="Starbelly">
             </a>
@@ -68,12 +71,14 @@
               </nav>
               <div class="sb-buttons-frame">
                 <!-- button -->
-                <div class="sb-btn sb-btn-2 sb-btn-gray sb-btn-icon sb-m-0 sb-btn-cart">
-                  <span class="sb-icon">
-                    <img src="{% static 'starbelly/img/ui/icons/cart' %}.svg" alt="icon">
-                  </span>
-                  <i class="sb-cart-number">5</i>
-                </div>
+                <a href="{% url 'cart' cafe.id user.tg_id %}">
+                  <div class="sb-btn sb-btn-2 sb-btn-gray sb-btn-icon sb-m-0 sb-btn-cart">
+                    <span class="sb-icon">
+                      <img src="{% static 'starbelly/img/ui/icons/cart' %}.svg" alt="icon">
+                    </span>
+                    <i class="sb-cart-number">{{count_cart}}</i>
+                  </div>
+                </a>
                 <!-- button end -->
                 <!-- menu btn -->
                 <!-- info btn -->
@@ -101,115 +106,46 @@
             <div class="sb-cart-table">
               <div class="sb-cart-table-header">
                 <div class="row">
-                  <div class="col-lg-6">Product</div>
-                  <div class="col-lg-3">Quantity</div>
-                  <div class="col-lg-1">Price</div>
-                  <div class="col-lg-1">Total</div>
+                  <div class="col-lg-6">Mahsulot</div>
+                  <div class="col-lg-1">Soni</div>
+                  <div class="col-lg-1">Narxi</div>
+                  <div class="col-lg-1">Umumiy</div>
                   <div class="col-lg-1"></div>
                 </div>
               </div>
+              {% for cart in carts %}
               <div class="sb-cart-item">
                 <div class="row align-items-center">
                   <div class="col-lg-6">
-                    <a class="sb-product" href="product.html">
+                    <a class="sb-product" href="{% url 'product' cart.product.id user.tg_id %}">
                       <div class="sb-cover-frame">
-                        <img src="{% static 'starbelly/img/menu/1.jpg' %}" alt="product">
+                        <img src="{{cart.product.image.url}}" alt="product">
                       </div>
                       <div class="sb-prod-description">
-                        <h4 class="sb-mb-10">Chevrefrit au miel</h4>
-                        <p class="sb-text sb-text-sm"><span>tomatoes</span>, <span>nori</span>, <span>feta
-                            cheese</span>, <span>mushrooms</span>, <span>rice noodles</span>, <span>corn</span>,
-                          <span>shrimp</span>.
+                        <h4 class="sb-mb-10">{{cart.product.name}}</h4>
+                        <p class="sb-text sb-text-sm">
+                          {{cart.product.about}}
                         </p>
                       </div>
                     </a>
                   </div>
-                  <div class="col-6 col-lg-3">
-                    <div class="sb-input-number-frame">
-                      <div class="sb-input-number-btn sb-sub">-</div>
-                      <input type="number" value="1" min="1" max="10">
-                      <div class="sb-input-number-btn sb-add">+</div>
+                  <div class="col-3 col-lg-1">
+                    <div class="sb-price-2">{{cart.quantity}}</div>
+                  </div>
+                  <div class="col-3 col-lg-1">
+                    <div class="sb-price-1">{{cart.product.price|intcomma}}<span>so'm</span></div>
+                  </div>
+                  <div class="col-3 col-lg-1">
+                    <div class="sb-price-2">
+                      {% widthratio cart.product.price 1 cart.quantity as total %} {{total|intcomma}}<span>so'm</span>
                     </div>
                   </div>
-                  <div class="col-3 col-lg-1">
-                    <div class="sb-price-1"><span>Price: </span>$14.00</div>
-                  </div>
-                  <div class="col-3 col-lg-1">
-                    <div class="sb-price-2"><span>Total: </span>$14.00</div>
-                  </div>
                   <div class="col-1">
-                    <a href="#." class="sb-remove">+</a>
+                    <a href="{% url 'del-cart' cart.id user.tg_id %}" class="sb-remove">+</a>
                   </div>
                 </div>
               </div>
-              <div class="sb-cart-item">
-                <div class="row align-items-center">
-                  <div class="col-lg-6">
-                    <a class="sb-product" href="product.html">
-                      <div class="sb-cover-frame">
-                        <img src="{% static 'starbelly/img/menu/2.jpg' %}" alt="product">
-                      </div>
-                      <div class="sb-prod-description">
-                        <h4 class="media-heading sb-mb-10">Carpaccio de daurade</h4>
-                        <p class="sb-text sb-text-sm"><span>tomatoes</span>, <span>nori</span>, <span>feta
-                            cheese</span>, <span>mushrooms</span>, <span>rice noodles</span>, <span>corn</span>,
-                          <span>shrimp</span>.
-                        </p>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-6 col-lg-3">
-                    <div class="sb-input-number-frame">
-                      <div class="sb-input-number-btn sb-sub">-</div>
-                      <input type="number" value="1" min="1" max="10">
-                      <div class="sb-input-number-btn sb-add">+</div>
-                    </div>
-                  </div>
-                  <div class="col-3 col-lg-1">
-                    <div class="sb-price-1"><span>Price: </span>$7.99</div>
-                  </div>
-                  <div class="col-3 col-lg-1">
-                    <div class="sb-price-2"><span>Total: </span>$7.99</div>
-                  </div>
-                  <div class="col-1">
-                    <a href="#." class="sb-remove">+</a>
-                  </div>
-                </div>
-              </div>
-              <div class="sb-cart-item">
-                <div class="row align-items-center">
-                  <div class="col-lg-6">
-                    <a class="sb-product" href="product.html">
-                      <div class="sb-cover-frame">
-                        <img src="{% static 'starbelly/img/menu/3.jpg' %}" alt="product">
-                      </div>
-                      <div class="sb-prod-description">
-                        <h4 class="media-heading sb-mb-10">Stracciatella</h4>
-                        <p class="sb-text sb-text-sm"><span>tomatoes</span>, <span>nori</span>, <span>feta
-                            cheese</span>, <span>mushrooms</span>, <span>rice noodles</span>, <span>corn</span>,
-                          <span>shrimp</span>.
-                        </p>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-6 col-lg-3">
-                    <div class="sb-input-number-frame">
-                      <div class="sb-input-number-btn sb-sub">-</div>
-                      <input type="number" value="1" min="1" max="10">
-                      <div class="sb-input-number-btn sb-add">+</div>
-                    </div>
-                  </div>
-                  <div class="col-3 col-lg-1">
-                    <div class="sb-price-1"><span>Price: </span>$11.00</div>
-                  </div>
-                  <div class="col-3 col-lg-1">
-                    <div class="sb-price-2"><span>Total: </span>$11.00</div>
-                  </div>
-                  <div class="col-1">
-                    <a href="#." class="sb-remove">+</a>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
 
               <div class="row justify-content-end">
                 <div class="col-lg-6">
@@ -217,50 +153,59 @@
                     <div class="sb-sum">
                       <div class="row">
                         <div class="col-8">
-                          <div class="sb-total-title">Subtotal:</div>
+                          <div class="sb-total-title">Mmumiy mahsulotlar narxi:</div>
                         </div>
                         <div class="col-4">
-                          <div class="sb-price-1 text-right">$32.99</div>
+                          <div class="sb-price-1 text-right">{{subtotal_price|intcomma}}
+                            <div>so'm</div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="sb-sum">
                       <div class="row">
                         <div class="col-8">
-                          <div class="sb-total-title">Estimated shipping:</div>
+                          <div class="sb-total-title">Yetkazib berish narxi:</div>
                         </div>
                         <div class="col-4">
-                          <div class="sb-price-1 text-right">$5</div>
+                          <div class="sb-price-1 text-right">{{cafe.order_price|intcomma}}
+                            <div>so'm</div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="sb-realy-sum">
                       <div class="row">
                         <div class="col-8">
-                          <div class="sb-total-title">Total:</div>
+                          <div class="sb-total-title">Umumiy:</div>
                         </div>
                         <div class="col-4">
-                          <div class="sb-price-2 text-right">$37.99</div>
+                          <div class="sb-price-2 text-right">{{total|intcomma}}
+                            <div>so'm</div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="sb-cart-btns-frame text-right">
                     <!-- button -->
-                    <a href="shop-1.html" class="sb-btn sb-btn-2 sb-btn-gray">
+                    <a href="{% url 'menu' cafe.id user.tg_id %}" class="sb-btn sb-btn-2 sb-btn-gray">
                       <span class="sb-icon">
                         <img src="{% static 'starbelly/img/ui/icons/arrow' %}-2.svg" alt="icon">
                       </span>
-                      <span>Continue shopping</span>
+                      <span>Menuga qaytish</span>
                     </a>
                     <!-- button end -->
                     <!-- button -->
-                    <a href="checkout.html" class="sb-btn sb-m-0">
-                      <span class="sb-icon">
-                        <img src="{% static 'starbelly/img/ui/icons/arrow' %}.svg" alt="icon">
-                      </span>
-                      <span>Checkout</span>
-                    </a>
+                    <form action="{% url 'check-out' cafe.id user.tg_id %}" method="post">
+                      {% csrf_token %}
+                      <button onclick="this.form.submit();" class="sb-btn sb-m-0">
+                        <span class="sb-icon">
+                          <img src="{% static 'starbelly/img/ui/icons/arrow' %}.svg" alt="icon">
+                        </span>
+                        <span>Buyurtma berish</span>
+                      </button>
+                    </form>
                     <!-- button end -->
                   </div>
                 </div>
@@ -300,21 +245,7 @@
     <script src="{% static 'starbelly/js/main.js' %}"></script>
     <script>
       document.documentElement.style.setProperty("--theme_color", '{{cafe.theme_color}}');
-      $.ajax({
-        url: "{% url 'cart_count' %}",
-        data: {
-          "tg_id": 1221,
-          "cafe": '{{ cafe.id }}'
-        },
-        cache: false,
-        type: "GET",
-        success: function (response) {
-          document.getElementById("cart_len").innerText = response.count_cart;
-        },
-        error: function (xhr) {
-          console.log('error')
-        }
-      });
+
     </script>
   </body>
 

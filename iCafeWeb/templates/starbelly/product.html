@@ -61,7 +61,7 @@
         <div class="sb-top-bar-bg"></div>
         <div class="container">
           <div class="sb-top-bar">
-            <a href="{% url 'menu' cafe.id %}" class="sb-logo-frame">
+            <a href="{% url 'menu' cafe.id user.tg_id %}" class="sb-logo-frame">
               <!-- logo img -->
               <img src="{{cafe.logo.url}}" alt="Starbelly">
             </a>
@@ -71,12 +71,14 @@
               </nav>
               <div class="sb-buttons-frame">
                 <!-- button -->
-                <div class="sb-btn sb-btn-2 sb-btn-gray sb-btn-icon sb-m-0 sb-btn-cart">
-                  <span class="sb-icon">
-                    <img src="{% static 'starbelly/img/ui/icons/cart' %}.svg" alt="icon">
-                  </span>
-                  <i class="sb-cart-number">{{count_cart}}</i>
-                </div>
+                <a href="{% url 'cart' cafe.id user.tg_id %}">
+                  <div class="sb-btn sb-btn-2 sb-btn-gray sb-btn-icon sb-m-0 sb-btn-cart">
+                    <span class="sb-icon">
+                      <img src="{% static 'starbelly/img/ui/icons/cart' %}.svg" alt="icon">
+                    </span>
+                    <i class="sb-cart-number">{{count_cart}}</i>
+                  </div>
+                </a>
                 <!-- button end -->
                 <!-- menu btn -->
                 <!-- info btn -->
@@ -100,7 +102,7 @@
               <!-- main title -->
               <div class="sb-main-title-frame">
                 <div class="sb-main-title">
-                  <a href="{% url 'menu' cafe.id %}" class="sb-btn">
+                  <a href="{% url 'menu' cafe.id user.tg_id %}" class="sb-btn">
                     <span class="sb-icon">
                       <img src="{% static 'starbelly/img/ui/icons/menu.svg' %}" alt="icon">
                     </span>
@@ -139,12 +141,11 @@
                     <div class="sb-price" style="width: 120px;">{{product.price|intcomma}}<sub>so'm</sub></div>
                   </div>
                   <p class="sb-text sb-mb-30">{{product.about}} </p>
-                  <form action="" method="post">
+                  <form action="{% url 'add-cart' product.id user.tg_id %}" method="get">
                     {% csrf_token %}
                     <div class="sb-buttons-frame">
                       <div class="sb-input-number-frame">
 
-                        <input name="tg_id" type="hidden" value="">
 
                         <div class="sb-input-number-btn sb-sub">-</div>
                         <input name="quantity" type="number" value="1" min="1" max="10">
@@ -210,28 +211,8 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <script>
-      let tg = window.Telegram.WebApp;
-
-      user = tg.initDataUnsafe.user;
-      tg_id = user.id;
-
-      document.getElementsByName("tg_id").values = tg_id
       document.documentElement.style.setProperty("--theme_color", '{{ cafe.theme_color }}');
-      $.ajax({
-        url: "{% url 'cart_count' %}",
-        data: {
-          "tg_id": tg_id,
-          "cafe": '{{ cafe.id }}'
-        },
-        cache: false,
-        type: "GET",
-        success: function (response) {
-          document.getElementById("cart_len").innerText = response.count_cart;
-        },
-        error: function (xhr) {
-          console.log('error')
-        }
-      });
+
     </script>
   </body>
 

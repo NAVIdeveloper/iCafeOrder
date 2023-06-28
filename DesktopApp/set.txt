@@ -1,0 +1,9 @@
+body bg = #f3f2f7
+body color = #172b4c
+active color = #fd683e
+active bg = #ffd6cb
+blue color = #118bd0
+blue bg = #d5e5f4
+font = "IBM Plex Sans", sans-serif
+font weight = 400
+
