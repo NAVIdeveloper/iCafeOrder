@@ -4,27 +4,60 @@ import conf
 
 card_width = 320
 card_height = 120
-card_bg = "white"
+card_bg = conf.card_bg
+
+count_order = Text(
+    "89",
+    font_family=conf.font_family,
+    weight='w600',
+    color=conf.font_color,
+    size=32,
+)
+total_sum = Text(
+    "500,000",
+    font_family=conf.font_family,
+    weight='w600',
+    color=conf.font_color,
+    size=32,
+)
+count_user = Text(
+    "102",
+    font_family=conf.font_family,
+    weight='w600',
+    color=conf.font_color,
+    size=32,
+)
+count_product = Text(
+    "20",
+    font_family=conf.font_family,
+    weight='w600',
+    color=conf.font_color,
+    size=32,
+)
+
+def OnOfChange(e):
+    import BOT
+    if e.control.value == True:
+        BOT.bot.polling()
+        e.control.label = "Bot ishlamoqda."
+        
+    else:
+        BOT.bot.stop_polling()
+        e.control.label = "Bot o'chirilgan."
+    e.control.update()
 
 dashboard = Container(
     Column([
         Row([
             Container(
                 Row([
-                    Image(src='assets/card_1.png'),
                     Column([
-                        Text(
-                            "89",
-                            font_family=conf.font_family,
-                            weight='w600',
-                            color=conf.body_fg,
-                            size=32,
-                        ),
+                        count_order,
                         Text(
                             "Buyurtmalar soni",
                             font_family=conf.font_family,
                             weight='w400',
-                            color=conf.body_fg,
+                            color=conf.font_color,
                             size=20,
                         )
                     ],spacing=0)
@@ -37,20 +70,13 @@ dashboard = Container(
             ),
             Container(
                 Row([
-                    Image(src='assets/card_2.png'),
                     Column([
-                        Text(
-                            "500,000",
-                            font_family=conf.font_family,
-                            weight='w600',
-                            color=conf.body_fg,
-                            size=32,
-                        ),
+                        total_sum,
                         Text(
                             "Tushgan Summa",
                             font_family=conf.font_family,
                             weight='w400',
-                            color=conf.body_fg,
+                            color=conf.font_color,
                             size=20,
                         )
                     ],spacing=0)
@@ -65,20 +91,13 @@ dashboard = Container(
         Row([
             Container(
                 Row([
-                    Image(src='assets/card_1.png'),
                     Column([
-                        Text(
-                            "102",
-                            font_family=conf.font_family,
-                            weight='w600',
-                            color=conf.body_fg,
-                            size=32,
-                        ),
+                        count_user,
                         Text(
                             "Foydalanuvchilar soni",
                             font_family=conf.font_family,
                             weight='w400',
-                            color=conf.body_fg,
+                            color=conf.font_color,
                             size=20,
                         )
                     ],spacing=0)
@@ -91,20 +110,13 @@ dashboard = Container(
             ),
             Container(
                 Row([
-                    Image(src='assets/card_2.png'),
                     Column([
-                        Text(
-                            "20",
-                            font_family=conf.font_family,
-                            weight='w600',
-                            color=conf.body_fg,
-                            size=32,
-                        ),
+                        count_product,
                         Text(
                             "Mahsulotlar soni",
                             font_family=conf.font_family,
                             weight='w400',
-                            color=conf.body_fg,
+                            color=conf.font_color,
                             size=20,
                         )
                     ],spacing=0)
@@ -116,9 +128,18 @@ dashboard = Container(
                 border_radius=3,
             ),
         ],alignment='spaceBetween'),
+        Container(
+            Switch(
+                label="Bot o'chirilgan.",
+                value=False,
+                active_color='white',
+                active_track_color=conf.button_color,
+                on_change=OnOfChange,
+            ),
+        )
     ],spacing=50),
     width=conf.width,
     height=conf.height,
-    bgcolor=conf.body_bg,
+    bgcolor=conf.background,
     padding=padding.only(100,50,100,50),
 )

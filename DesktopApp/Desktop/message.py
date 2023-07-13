@@ -2,8 +2,8 @@ from flet import *
 import flet
 import conf
 
-bg = 'white'
-border_color = 'green'
+bg = conf.background
+border_color = conf.border_color
 file_picker = FilePicker()
 
 field_message = TextField(
@@ -13,11 +13,14 @@ field_message = TextField(
     hint_text="Xabar",
     multiline=True,
     min_lines=3,
+    bgcolor=conf.card_bg
 )
 
 message_btn=ElevatedButton(
     "xabarni barchaga yuborish",
     icon=icons.SEND,
+    icon_color=conf.button_color,
+    color=conf.button_color,
     #on_click need
 )
 

@@ -3,7 +3,7 @@ import flet
 import conf
 import init_sql
 
-bg = 'white'
+bg = conf.background
 border_color = 'green'
 
 def Save_Field(e):
@@ -28,6 +28,7 @@ field_start = TextField(
     hint_text="Kirish matni..",
     multiline=True,
     min_lines=2,
+    bgcolor=conf.card_bg
 )
 
 field_order = TextField(
@@ -38,6 +39,8 @@ field_order = TextField(
     hint_text="Buyurtma olingadagi matn..",
     multiline=True,
     min_lines=2,
+    bgcolor=conf.card_bg
+
 )
 
 field_run = TextField(
@@ -48,6 +51,8 @@ field_run = TextField(
     hint_text="Bot ishga tushganidagi matn..",
     multiline=True,
     min_lines=2,
+    bgcolor=conf.card_bg
+
 )
 
 field_about = TextField(
@@ -58,12 +63,16 @@ field_about = TextField(
     hint_text="Bot haqida matni..",
     multiline=True,
     min_lines=2,
+    bgcolor=conf.card_bg
+
 )
 
 submit_btn = flet.ElevatedButton(
     "Saqlash",
     width=150,
     icon=icons.DONE,
+    icon_color=conf.button_color,
+    color=conf.button_color,
     on_click=Save_Field,
 )
 

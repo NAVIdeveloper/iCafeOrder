@@ -4,6 +4,8 @@ import conf
 import dashboard
 import settings
 import message
+import categorys
+import products
 
 WIDTH = 200
 HEIGHT = conf.height
@@ -14,7 +16,7 @@ BTN_HEIGHT = 50
 dashboard_button = Tab(
     tab_content=Text(
         "Dashboard",
-        color=conf.body_fg,
+        color=conf.font_color,
         font_family=conf.font_family,
     ),
     content=dashboard.dashboard,
@@ -23,7 +25,7 @@ dashboard_button = Tab(
 settings_button = Tab(
     tab_content=Text(
         "Sozlamalar",
-        color=conf.body_fg,
+        color=conf.font_color,
         font_family=conf.font_family,
     ),
     content=settings.settings,
@@ -32,8 +34,25 @@ settings_button = Tab(
 message_button = Tab(
     tab_content=Text(
         "Xabar Yuborish",
-        color=conf.body_fg,
+        color=conf.font_color,
         font_family=conf.font_family,
     ),
     content=message.message,
+)
+categorys_button = Tab(
+    tab_content=Text(
+        "Kategoriyalar",
+        color=conf.font_color,
+        font_family=conf.font_family,
+    ),
+    content=categorys.categorys,
+)
+
+products_button = Tab(
+    tab_content=Text(
+        "Mahsulotlar",
+        color=conf.font_color,
+        font_family=conf.font_family,
+    ),
+    content=products.products,
 )

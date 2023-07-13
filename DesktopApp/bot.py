@@ -1,9 +1,8 @@
-from Desktop import *
+from Desktop import webapi,init_sql,conf
 import flet
 from telebot import *
 
 bot = TeleBot(conf.BOT_TOKEN)
-
 
 @bot.message_handler(commands=['start'])
 def Command_Start(message):
@@ -30,4 +29,5 @@ def CallBack(call):
 	print(call.data)
 
 
-bot.infinity_polling()
+# bot.infinity_polling()
+# bot.stop_polling()
